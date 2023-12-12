@@ -1,5 +1,5 @@
 float dt = 0.1f;
-public PVector gravity = new PVector(0, 16.2);
+public PVector gravity = new PVector(0, 1.62);
 public boolean[] CKEYS = new boolean[255];
 
 public int C_G = 71;
@@ -25,22 +25,33 @@ void moveAll() {
 
 void drawAll() {
   background(0);
+  resetMatrix();
   
   boden.draw();
   rocket.draw();
 }
 
 void crash() {
-  par.addParticleExplosion();
+  for (int i=0; i<10000; i++){
+    par.addParticleExplosion();
+  }
+  rocket.setLife(false);
+  rocket.setPos(rocket.getPos().x, height-100);
+}
+
+void land() {
+  rocket.setPos(rocket.getPos().x, /*rocket.getLegs().y*/height-100-20-15);
+  rocket.setVelocity(0.0, 0.0);
 }
 
 void checkCollision() {
-  if (CKEYS[C_G] == false && rocket.getPos().y > height-100) {
+  if (rocket.getLanding() == false && rocket.getPos().y > height-100) {
     crash();
-  } else if (CKEYS[C_G] == true && rocket.getLegs().y > height-100) {
-    if (rocket.getVelocity().y > 40) {
+  } else if (rocket.getLanding() == true && rocket.getLegs().y > height-100) {
+    if (rocket.getVelocity().y > 20) {
       crash();
     } else {
+      land();
       println("Landed Succefully");
     }
   }
@@ -50,13 +61,13 @@ void checkCollision() {
 void draw() {
   dt = 1/frameRate;
   
-  crash();
+  println(rocket.getVelocity());
   
   moveAll();
   checkCollision();
   drawAll();
   
-  par.setOrigin(new PVector(rocket.getPos().x, height-100));
+  par.setOrigin(rocket.getPos());
   par.run();
 }
 
@@ -66,11 +77,13 @@ void draw() {
 //Register Keyboard Inputs to add to Array
 void keyPressed() {
   CKEYS[keyCode] = true;
+  
+  if (keyCode == C_G) {
+    rocket.setLanding(!(rocket.getLanding()));
+  }
 }
 
 //Register when Key is released to remove from Array
 void keyReleased() {
-  if (keyCode != C_G) {
-    CKEYS[keyCode] = false;
-  }
+  CKEYS[keyCode] = false;
 }

@@ -10,10 +10,10 @@ class Antrieb {
   }
 
   private void schub(int px, int py) {
-    angle = 45 * px;
+    angle = 35 * px;
     
     pForce.add(new PVector(0, -power));
-    pForce.rotate(radians(angle));
+    pForce.rotate(radians(angle + (px*20)));
     
     ps.addParticle();
   }

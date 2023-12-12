@@ -7,6 +7,8 @@ class Rocket {
   protected PVector gravity = new PVector(0, 1.62);
   protected Antrieb a1 = new Antrieb();
   protected Antrieb a2 = new Antrieb();
+  protected boolean life = true;
+  protected boolean landing = false;
 
   Rocket(PVector g, float mm, float rx, float ry, float vx, float vy) {
     gravity = g;
@@ -16,27 +18,50 @@ class Rocket {
     v.x = vx;
     v.y = vy;
   }
+  
+  public void setVelocity(float vx, float vy) {
+    v.x = vx;
+    v.y = vy;
+  }
+  
+  public void setPos(float posx, float posy) {
+    r = new PVector(posx, posy);
+  }
 
-  public void accel(PVector extForce) {
-    a1.check();
-    a2.check();
-    PVector force = new PVector(0, 0);
-
-    force.add(extForce);
-    force.add(a1.getPForce());
-    force.add(a2.getPForce());
-    
-    PVector acc = new PVector();
-    if (m != 0) {
-      acc.set(force).div(m);
-    } else {
-      acc.set(new PVector(0, 0, 0));
+  public void setLife(boolean state) {
+    if (life){
+      life = state;  
     }
+  }
+  
+  public void setLanding(boolean state) {
+    landing = state;
+  }
+  
+  public void accel(PVector extForce) {
     
-    acc.add(gravity);
-
-    PVector dv = acc.mult(dt);
-    v.add(dv);
+    if (life) {
+      a1.check();
+      a2.check();
+      PVector force = new PVector(0, 0);
+  
+      force.add(extForce);
+      force.add(a1.getPForce());
+      force.add(a2.getPForce());
+      
+      PVector acc = new PVector();
+      if (m != 0) {
+        acc.set(force).div(m);
+      } else {
+        acc.set(new PVector(0, 0, 0));
+      }
+      
+      acc.add(gravity);
+  
+      PVector dv = acc.mult(dt);
+      v.add(dv);
+      
+    }
   }
 
   public void accel() {
@@ -44,11 +69,13 @@ class Rocket {
   }
 
   public void move() {
-    PVector dr = new PVector();
-
-    dr.set(v);
-    dr.mult(dt);
-    r.add(dr);
+    if (life) {
+      PVector dr = new PVector();
+  
+      dr.set(v);
+      dr.mult(dt);
+      r.add(dr);
+    }
   }
 
   public PVector getPos() {
@@ -56,7 +83,8 @@ class Rocket {
   }
   
   public PVector getLegs() {
-    return new PVector(r.x, r.y+size+15);
+    PVector f = new PVector(r.x, r.y+size+15);
+    return f;
   }
 
   public float getMass() {
@@ -66,6 +94,10 @@ class Rocket {
   public PVector getVelocity() {
     return v; 
   }
+  
+  public boolean getLanding() {
+    return landing;
+  }
 
   public void draw() {
     fill(255);
@@ -74,7 +106,7 @@ class Rocket {
     triangle(0, 0, -size, size, size, size);
     circle(0, 0, size);
     
-    if (CKEYS[C_G] == true) {
+    if (landing) {
       stroke(255);
       line(0, size, 0, size+15);
       line(-5, size+15, 5, size+15);
@@ -94,13 +126,10 @@ class Rocket {
     a1.draw();
     
     popMatrix();
-    pushMatrix();
     translate(-size/2, size - 3);
     a2.draw();
     
-    popMatrix();
-    
-    
+    resetMatrix();
   }
 
 }
