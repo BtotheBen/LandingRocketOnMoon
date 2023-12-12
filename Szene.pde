@@ -1,6 +1,10 @@
 float dt = 0.1f;
-public PVector gravity = new PVector(0, 1.62);
+public PVector gravity = new PVector(0, 16.2);
 public boolean[] CKEYS = new boolean[255];
+
+public int C_G = 71;
+
+ParticleSystem par = new ParticleSystem(new PVector(0, 0), 10);
 
 Rocket rocket;
 Boden boden;
@@ -11,6 +15,7 @@ void setup() {
   
   rocket = new Rocket(gravity, 15000, width/2, height/10, 0, 0);
   boden = new Boden();
+  
 }
 
 void moveAll() {
@@ -25,14 +30,36 @@ void drawAll() {
   rocket.draw();
 }
 
+void crash() {
+  par.addParticleExplosion();
+}
+
+void checkCollision() {
+  if (CKEYS[C_G] == false && rocket.getPos().y > height-100) {
+    crash();
+  } else if (CKEYS[C_G] == true && rocket.getLegs().y > height-100) {
+    if (rocket.getVelocity().y > 40) {
+      crash();
+    } else {
+      println("Landed Succefully");
+    }
+  }
+}
+
+
 void draw() {
   dt = 1/frameRate;
   
+  crash();
+  
   moveAll();
+  checkCollision();
   drawAll();
   
-  
+  par.setOrigin(new PVector(rocket.getPos().x, height-100));
+  par.run();
 }
+
 
 
 
@@ -43,5 +70,7 @@ void keyPressed() {
 
 //Register when Key is released to remove from Array
 void keyReleased() {
-  CKEYS[keyCode] = false;
+  if (keyCode != C_G) {
+    CKEYS[keyCode] = false;
+  }
 }

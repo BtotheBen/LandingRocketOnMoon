@@ -21,6 +21,13 @@ class ParticleSystem {
       timestamp = millis();
     }
   }
+  
+  public void addParticleExplosion() {
+    if (millis() - timestamp > limit){
+      particles.add(new ParticleExplosion(origin));
+      timestamp = millis();
+    }
+  }
 
   public void run() {
     for (int i = particles.size()-1; i >= 0; i--) {

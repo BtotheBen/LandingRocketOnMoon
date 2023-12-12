@@ -27,12 +27,12 @@ class Antrieb {
     
     if (CKEYS[UP] == true) {
       schub(0, -1);
-    }
-    if (CKEYS[LEFT] == true) {
+    } else if (CKEYS[LEFT] == true) {
       schub(-1, 0);
-    }
-    if (CKEYS[RIGHT] == true) {
+    } else if (CKEYS[RIGHT] == true) {
       schub(1, 0);
+    } else if (CKEYS[RIGHT] == false && CKEYS[LEFT] == false && CKEYS[UP] == false) {
+      angle = 0;
     }
    
   }
@@ -49,15 +49,16 @@ class Antrieb {
     return angle;
   }
 
-  public void draw(float posx, float posy)  {
-    
-    translate(posx, posy);
+  public void draw()  {
     rotate(radians(angle));
     
-    square(0, 0, size);
-    circle(size/2, 0, size);
+    rectMode(CORNERS);
+    rect(-size/2, 0, size/2, size);
+    rectMode(CORNER);
+    circle(0, 0, size);
     
-    ps.setOrigin(new PVector(size/2,size));
+    
+    ps.setOrigin(new PVector(0, size));
     ps.run();
   } 
 }
