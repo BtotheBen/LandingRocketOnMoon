@@ -9,6 +9,7 @@ class Rocket {
   protected Antrieb a2 = new Antrieb();
   protected boolean life = true;
   protected boolean landing = false;
+  protected ParticleSystem par = new ParticleSystem(new PVector(0, 0), 10);
 
   Rocket(PVector g, float mm, float rx, float ry, float vx, float vy) {
     gravity = g;
@@ -26,12 +27,6 @@ class Rocket {
   
   public void setPos(float posx, float posy) {
     r = new PVector(posx, posy);
-  }
-
-  public void setLife(boolean state) {
-    if (life){
-      life = state;  
-    }
   }
   
   public void setLanding(boolean state) {
@@ -78,6 +73,29 @@ class Rocket {
     }
   }
 
+  public void crash() {
+    for (int i=0; i<10000; i++){
+      par.addParticleExplosion();
+    }
+    if (life){
+      life = false;  
+    }
+    r.set(r.x, height-99);
+    v.set(0.0, 0.0);
+    
+    resetMatrix();
+    textFont(font);
+    textAlign(CENTER);
+    fill(255, 0, 0);
+    text("CRASHED", width/2, height/2);
+    fill(255);
+  }
+
+  public void land() {
+    r.set(r.x, height-100-size-15);
+    v.set(0.0, 0.0);
+  }
+
   public PVector getPos() {
     return r;
   }
@@ -97,6 +115,10 @@ class Rocket {
   
   public boolean getLanding() {
     return landing;
+  }
+  
+  public boolean getLife() {
+    return life; 
   }
 
   public void draw() {
@@ -130,6 +152,11 @@ class Rocket {
     a2.draw();
     
     resetMatrix();
+  }
+  
+  public void check() {
+    par.setOrigin(r);
+    par.run(); 
   }
 
 }
