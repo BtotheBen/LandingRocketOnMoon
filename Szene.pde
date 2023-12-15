@@ -1,8 +1,9 @@
 float dt = 0.1f;
-public PVector gravity = new PVector(0, 162);
+public PVector gravity = new PVector(0, 1.62);
 public boolean[] CKEYS = new boolean[255];
 
 public int C_G = 71;
+public int C_SPACE = 32;
 public PFont font;
 
 
@@ -34,7 +35,7 @@ void drawAll() {
 
 
 void checkCollision() {
-  if (rocket.getLanding() == false && rocket.getPos().y > height-100) {
+  if (rocket.getLanding() == false && rocket.getPos().y > height-100-20) {
     rocket.crash();
     println("crashed without landing");
   } else if (rocket.getLanding() == true && rocket.getLegs().y > height-100) {
@@ -50,7 +51,7 @@ void checkCollision() {
 void draw() {
   dt = 1/frameRate;
 
-  //println(rocket.getVelocity());
+  println(rocket.getVelocity());
 
   moveAll();
   drawAll();
@@ -64,7 +65,7 @@ void draw() {
 void keyPressed() {
   CKEYS[keyCode] = true;
 
-  if (keyCode == C_G && rocket.getLife() == true) {
+  if (keyCode == C_SPACE && rocket.getLife() == true) {
     rocket.setLanding(!(rocket.getLanding()));
   }
 }

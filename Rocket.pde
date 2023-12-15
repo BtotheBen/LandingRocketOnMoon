@@ -4,7 +4,7 @@ class Rocket {
   protected PVector r = new PVector(0, 0);
   protected PVector v = new PVector(0, 0);
   protected float size = 20;
-  protected PVector gravity = new PVector(0, 1.62);
+  protected PVector gravity;
   protected Antrieb a1 = new Antrieb();
   protected Antrieb a2 = new Antrieb();
   protected boolean life = true;
@@ -92,7 +92,7 @@ class Rocket {
   }
 
   public void land() {
-    r.set(r.x, height-100-size-15);
+    r.set(r.x, height-100-size-16);
     v.set(0.0, 0.0);
   }
 
