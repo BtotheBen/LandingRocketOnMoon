@@ -5,17 +5,22 @@ class Antrieb {
   protected int size = 10;
   protected int angle = 0;
   protected ParticleSystem ps = new ParticleSystem(new PVector(0, 0), 50);
+  protected Rocket rocketDelegate;
 
-  Antrieb() {
+  Antrieb(Rocket rr) {
+    rocketDelegate = rr;
   }
 
   private void schub(int px, int py) {
-    angle = 35 * px;
     
-    pForce.add(new PVector(0, -power));
-    pForce.rotate(radians(angle + (px*20)));
-    
-    ps.addParticle();
+    if (rocketDelegate.getLanding() == false) {
+      angle = 35 * px;
+      
+      pForce.add(new PVector(0, -power));
+      pForce.rotate(radians(angle + (px*45)));
+
+      ps.addParticle();
+    }
   }
 
   private void powerChange(int pp) {
@@ -36,6 +41,7 @@ class Antrieb {
     }
    
   }
+
 
   public void setPower(int pp) {
     power = pp;

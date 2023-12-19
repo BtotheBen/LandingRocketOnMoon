@@ -5,8 +5,8 @@ class Rocket {
   protected PVector v = new PVector(0, 0);
   protected float size = 20;
   protected PVector gravity;
-  protected Antrieb a1 = new Antrieb();
-  protected Antrieb a2 = new Antrieb();
+  protected Antrieb a1 = new Antrieb(this);
+  protected Antrieb a2 = new Antrieb(this);
   protected boolean life = true;
   protected boolean landing = false;
   protected ParticleSystem par = new ParticleSystem(new PVector(0, 0), 10);
@@ -73,14 +73,14 @@ class Rocket {
     }
   }
 
-  public void crash() {
+  public void crash(int posy) {
     for (int i=0; i<10000; i++){
       par.addParticleExplosion();
     }
     if (life){
       life = false;  
     }
-    r.set(r.x, height-99);
+    r.set(r.x, posy);
     v.set(0.0, 0.0);
     
     resetMatrix();
@@ -91,8 +91,8 @@ class Rocket {
     fill(255);
   }
 
-  public void land() {
-    r.set(r.x, height-100-size-16);
+  public void land(int posy) {
+    r.set(r.x, posy-size-16);
     v.set(0.0, 0.0);
   }
 
