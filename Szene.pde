@@ -1,12 +1,12 @@
-import java.util.Random;
-Random rand = new Random();
-
-float dt = 0.1f;
+public float dt = 0.1f;
 public PVector gravity = new PVector(0, 1.62);
 public boolean[] CKEYS = new boolean[255];
 
+public PVector emp = new PVector(0, 0, 0);
+
 public int C_G = 71;
 public int C_SPACE = 32;
+public PFont crashFont;
 public PFont font;
 
 
@@ -16,7 +16,9 @@ Boden boden;
 void setup() {
   fill(255);
   size(1200, 800);
-  font = createFont("Silkscreen-Regular.ttf", 200);
+  crashFont = createFont("Silkscreen-Regular.ttf", 200);
+  font = createFont("MicrosoftSansSerif.ttf", 12);
+  textFont(font);
 
   rocket = new Rocket(gravity, 15000, width/2, height/10, 0, 0);
   boden = new Boden();
@@ -40,8 +42,7 @@ void drawAll() {
 void checkCollision() {
   if (rocket.getLanding() == false && rocket.getPos().y > boden.getHeight(int(rocket.getPos().x))-20) {
     rocket.crash(boden.getHeight(int(rocket.getPos().x)));
-    println("crashed without landing");
-  } else if (rocket.getLanding() == true && rocket.getLegs().y > boden.getHeight(int(rocket.getPos().x))-20) {
+  } else if (rocket.getLanding() == true && rocket.getLegs().y > boden.getHeight(int(rocket.getPos().x))) {
     if (rocket.getVelocity().y > 20 || rocket.getLife() == false) {
       rocket.crash(boden.getHeight(int(rocket.getPos().x)));
     } else {
@@ -54,7 +55,7 @@ void checkCollision() {
 void draw() {
   dt = 1/frameRate;
 
-  println(rocket.getVelocity());
+  //println(rocket.getVelocity());
 
   moveAll();
   drawAll();

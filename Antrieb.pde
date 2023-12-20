@@ -4,8 +4,10 @@ class Antrieb {
   protected int power = 30000;
   protected int size = 10;
   protected int angle = 0;
+  protected float cost = 0.5;
   protected ParticleSystem ps = new ParticleSystem(new PVector(0, 0), 50);
   protected Rocket rocketDelegate;
+  protected boolean status = false;
 
   Antrieb(Rocket rr) {
     rocketDelegate = rr;
@@ -14,6 +16,8 @@ class Antrieb {
   private void schub(int px, int py) {
     
     if (rocketDelegate.getLanding() == false) {
+      status = true;
+      
       angle = 35 * px;
       
       pForce.add(new PVector(0, -power));
@@ -38,6 +42,7 @@ class Antrieb {
       schub(1, 0);
     } else if (CKEYS[RIGHT] == false && CKEYS[LEFT] == false && CKEYS[UP] == false) {
       angle = 0;
+      status = false;
     }
    
   }
@@ -53,6 +58,14 @@ class Antrieb {
   
   public int getAngle() {
     return angle;
+  }
+  
+  public float getCost() {
+    return cost; 
+  }
+  
+  public boolean getStatus() {
+    return status;
   }
 
   public void draw()  {

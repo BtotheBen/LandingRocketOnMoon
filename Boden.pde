@@ -11,7 +11,6 @@ class Boden {
         teile[i] = height - int(noise(i) * 50 + 80);
      }
      
-     println(teile);
   }
   
   public int getHeight(int posx){
@@ -22,9 +21,11 @@ class Boden {
   public void draw() {
     noStroke();
     rectMode(CORNERS);
+    fill(205);
     for (int i=0; i<numTeile; i++) {
       rect(i*(width/numTeile), teile[i], (i+1)*(width/numTeile), height); 
     }
     stroke(1);
+    fill(255);
   }
 }
