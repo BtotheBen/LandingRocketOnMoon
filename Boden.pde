@@ -3,13 +3,20 @@ class Boden {
   int numTeile = 20;
   int[] teile; 
   
+  int numPoints = 5;
+  int[] points;
+  
   Boden() {
      teile = new int[numTeile];
+     points = new int[numPoints];
      
-     noiseDetail(2, 0.9);
+     noiseDetail(8, 0.5);
      for (int i=0; i<numTeile; i++) {
         teile[i] = height - int(noise(i) * 50 + 80);
      }
+     
+     int pointsperarea = numTeile / numPoints;
+     
      
   }
   

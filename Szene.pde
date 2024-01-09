@@ -8,7 +8,7 @@ public int C_G = 71;
 public int C_SPACE = 32;
 public PFont crashFont;
 public PFont font;
-
+public PImage indienFlagge;
 
 Rocket rocket;
 Boden boden;
@@ -18,9 +18,10 @@ void setup() {
   size(1200, 800);
   crashFont = createFont("Silkscreen-Regular.ttf", 200);
   font = createFont("MicrosoftSansSerif.ttf", 12);
+  indienFlagge = loadImage("indien.jpeg");
   textFont(font);
 
-  rocket = new Rocket(gravity, 15000, width/2, height/10, 0, 0);
+  rocket = new Rocket(gravity, 15000, width/2, /*height/10*/ 600, 0, 0);
   boden = new Boden();
 }
 
