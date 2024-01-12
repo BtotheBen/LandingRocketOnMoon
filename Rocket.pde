@@ -13,8 +13,7 @@ class Rocket {
   protected ParticleSystem par = new ParticleSystem(new PVector(0, 0), 10);
   protected FuelTank tank = new FuelTank(2000);
   
-  protected boolean win = false;
-  protected PVector flaggePos;
+  protected Flagge flag;
 
   Rocket(PVector g, float mm, float rx, float ry, float vx, float vy) {
     gravity = g;
@@ -109,8 +108,7 @@ class Rocket {
     r.set(r.x, posy-size-15);
     v.set(0.0, 0.0);
     
-    flaggePos = new PVector(r.x + 50, r.y);
-    win = true;
+    flag = new Flagge(r.x + 50, r.y);
   }
 
   public PVector getPos() {
@@ -169,11 +167,9 @@ class Rocket {
     a2.draw();
 
     resetMatrix();
-    if (win){
-      stroke(255);
-      image(indienFlagge, flaggePos.x, flaggePos.y, 40, 25);
-      line(flaggePos.x, flaggePos.y, flaggePos.x, flaggePos.y + 80);
-      stroke(0);
+
+    if (flag != null) {
+      flag.draw();
     }
   }
 

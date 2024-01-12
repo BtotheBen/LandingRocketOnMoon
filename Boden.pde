@@ -1,28 +1,23 @@
 class Boden {
   
   int numTeile = 20;
-  int[] teile; 
-  
-  int numPoints = 5;
-  int[] points;
+  Tuple[] teile; 
   
   Boden() {
-     teile = new int[numTeile];
-     points = new int[numPoints];
+     teile = new Tuple[numTeile];
      
      noiseDetail(8, 0.5);
      for (int i=0; i<numTeile; i++) {
-        teile[i] = height - int(noise(i) * 50 + 80);
+        teile[i] = new Tuple(height - int(noise(i) * 50 + 80), Math.random() > 0.5);
      }
-     
-     int pointsperarea = numTeile / numPoints;
-     
-     
   }
   
-  public int getHeight(int posx){
-    int floor = teile[floor(posx / (width/numTeile))];
-    return floor;
+  public int getHeight(float posx){
+    return teile[floor(posx / (width/numTeile))].x;
+  }
+  
+  public boolean getDanger(float posx){
+    return teile[floor(posx / (width/numTeile))].y;
   }
   
   public void draw() {
@@ -30,7 +25,12 @@ class Boden {
     rectMode(CORNERS);
     fill(205);
     for (int i=0; i<numTeile; i++) {
-      rect(i*(width/numTeile), teile[i], (i+1)*(width/numTeile), height); 
+      if (teile[i].y == false) {
+        rect(i*(width/numTeile), teile[i].x, (i+1)*(width/numTeile), height); 
+      } else {
+        rect(i*(width/numTeile),height - 50, (i+1)*(width/numTeile), height);
+        triangle(i*(width/numTeile), height-50, (i+1)*(width/numTeile), height-50, (i+0.5)*(width/numTeile), teile[i].x);
+      }
     }
     stroke(1);
     fill(255);

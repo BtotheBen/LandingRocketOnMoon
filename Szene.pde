@@ -21,7 +21,7 @@ void setup() {
   indienFlagge = loadImage("indien.jpeg");
   textFont(font);
 
-  rocket = new Rocket(gravity, 15000, width/2, /*height/10*/ 600, 0, 0);
+  rocket = new Rocket(gravity, 15000, width/2, height/10, 0, 0);
   boden = new Boden();
 }
 
@@ -39,12 +39,11 @@ void drawAll() {
   rocket.check();
 }
 
-
 void checkCollision() {
-  if (rocket.getLanding() == false && rocket.getPos().y > boden.getHeight(int(rocket.getPos().x))-20) {
-    rocket.crash(boden.getHeight(int(rocket.getPos().x)));
-  } else if (rocket.getLanding() == true && rocket.getLegs().y > boden.getHeight(int(rocket.getPos().x))) {
-    if (rocket.getVelocity().y > 20 || rocket.getLife() == false) {
+  if (rocket.getLanding() == false && rocket.getPos().y > boden.getHeight(rocket.getPos().x)-20) {
+    rocket.crash(boden.getHeight(rocket.getPos().x));
+  } else if (rocket.getLanding() == true && rocket.getLegs().y > boden.getHeight(rocket.getPos().x)) {
+    if (rocket.getVelocity().y > 20 || rocket.getLife() == false || boden.getDanger(rocket.getPos().x)) {
       rocket.crash(boden.getHeight(int(rocket.getPos().x)));
     } else {
       rocket.land(boden.getHeight(int(rocket.getPos().x)));
@@ -52,21 +51,14 @@ void checkCollision() {
   }
 }
 
-
 void draw() {
   dt = 1/frameRate;
-
-  //println(rocket.getVelocity());
 
   moveAll();
   drawAll();
   checkCollision();
 }
 
-
-
-
-//Register Keyboard Inputs to add to Array
 void keyPressed() {
   CKEYS[keyCode] = true;
 
@@ -75,7 +67,6 @@ void keyPressed() {
   }
 }
 
-//Register when Key is released to remove from Array
 void keyReleased() {
   CKEYS[keyCode] = false;
 }

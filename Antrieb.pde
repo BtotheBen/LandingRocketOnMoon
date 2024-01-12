@@ -47,7 +47,6 @@ class Antrieb {
    
   }
 
-
   public void setPower(int pp) {
     power = pp;
   }
